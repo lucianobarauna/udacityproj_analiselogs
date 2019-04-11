@@ -1,24 +1,5 @@
-# Informações das tabelas no banco
+# Informações das tabelas no banco.
 
-### Criando o banco
-
-Para carregar os dados, use o comando `psql -d news -f newsdata.sql`.
-Eis o que faz este comando:
-
-- `psql` — o programa de linha de comando PostgreSQL
-- `-d news` — conecta ao banco de dados chamado news que foi criado para você
-- `-f newsdata.sql` — executa as declarações SQL no arquivo newsdata.sql
-
-Executar esse comando irá conectar você ao seu servidor de banco de dados instalado e executar os comandos SQL no arquivo baixado, criando tabelas e populando-as com dados.
-
-*Explorando os dados*
-Assim que tiver os dados carregados no seu banco de dados, conecte ao seu banco de dados usando `psql -d news` e explore as tabelas usando os comandos `\dt` e `\d table` e declarações `select`.
-
-- `\dt` — display tables — lista as tabelas que estão disponíveis no banco de dados.
-- `\d table` — (substitui table com o nome de uma tabela) — mostra o esquema do banco de dados para aquela tabela em particular.
-
-
-### Todas as tabelas do banco.
 ```
  List of relations
  Schema |   Name   | Type  |  Owner  
