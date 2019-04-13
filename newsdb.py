@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 
 import psycopg2
+import sys
 
 # Question 1: What are the three most popular articles of all time?
 query_articles = """select articles.title, count(*) as views
@@ -34,15 +35,23 @@ query_errors = """select * from (
 # Query data from the database, open and close the connection.
 def query_conn(sql_request):
     """ Query data from the database, open and close the connection """
-    conn = psycopg2.connect(database="news")
-    cursor = conn.cursor()
-    cursor.execute(sql_request)
-    results = cursor.fetchall()
-    conn.close()
-    return results
+    try:
+        conn = psycopg2.connect(database="news")
+        cursor = conn.cursor()
+        cursor.execute(sql_request)
+        results = cursor.fetchall()
+        conn.close()
+        return results
+    except psycopg2.Error as e:
+        print("Unable to connect to the database")
+        print(e.pgerror)
+        print(e.diag.message_detail)
+        sys.exit(1)
+
 
 # Writing the report
 report = open("log-analyzes.txt", "w+")
+
 
 # Print the top three articles of all time
 def top_three_articles():
@@ -52,6 +61,7 @@ def top_three_articles():
 
     for title, num in top_three_articles:
         report.write("\n  {} -- {} views".format(title, num))
+
 
 # Print the top authors of all time
 def rank_authors():
@@ -63,6 +73,7 @@ def rank_authors():
 
         report.write("\n  {} -- {} views".format(name, num))
 
+
 # Print the days in which there were more than 1% bad requests
 def over1_error_days():
     over1_error_days = query_conn(query_errors)
@@ -71,7 +82,6 @@ def over1_error_days():
 
     for day, percent in over1_error_days:
         report.write("\n  {} -- {} % errors\n".format(day, percent))
-
 
 if __name__ == '__main__':
     top_three_articles()
